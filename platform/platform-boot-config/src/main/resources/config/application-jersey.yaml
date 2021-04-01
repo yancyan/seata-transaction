@@ -1,0 +1,9 @@
+spring:
+  jersey:
+    application-path: ${spring.application.name}
+    type: servlet
+    servlet:
+      load-on-startup: 1
+    init: {
+      jersey.config.beanValidation.enableOutputValidationErrorEntity.server: true
+    }

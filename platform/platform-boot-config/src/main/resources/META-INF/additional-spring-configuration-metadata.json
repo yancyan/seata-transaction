@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "boss.tomcat-port",
+      "type": "java.lang.String",
+      "description": "Description for boss.tomcat-port."
+  }
+] }

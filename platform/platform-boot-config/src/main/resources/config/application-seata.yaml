@@ -1,0 +1,46 @@
+# nacos.
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: xxxx
+        namespace: stariboss-feature-3
+        username: nacos
+        password: admin
+# seata.
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: default
+  service:
+    vgroupMapping:
+      default: DEFAULT
+  registry:
+    type: nacos
+    nacos:
+      cluster: DEFAULT
+      group: DEFAULT_GROUP
+      application: seata-server
+      namespace: ${spring.cloud.nacos.discovery.namespace}
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+      username: ${spring.cloud.nacos.discovery.username}
+      password: ${spring.cloud.nacos.discovery.password}
+  enable-auto-data-source-proxy: true
+  use-jdk-proxy: false
+  transport:
+    heartbeat: true
+    enableClientBatchSendRequest: false
+  config:
+    type: springCloudConfig
+  client:
+    tm:
+      degradeCheck: false
+    rm:
+      reportSuccessEnable: true
+      lock:
+        retryInterval: 1000
+        retryTimes: 30
+    undo:
+      logSerialization: kryo
+    log:
+      exceptionRate: 1

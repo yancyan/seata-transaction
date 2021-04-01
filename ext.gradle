@@ -1,0 +1,8 @@
+ext {
+    set("springCloudVersion", "Hoxton.SR8")
+    set("springCloudAlibabaVersion", "2.2.5.RELEASE")
+
+    nacosVersion = ''
+    guavaVersion = '29.0-jre'
+    ojdbc10Version = '19.7.0.0'
+}

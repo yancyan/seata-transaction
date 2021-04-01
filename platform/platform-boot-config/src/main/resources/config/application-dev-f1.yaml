@@ -1,0 +1,17 @@
+spring:
+  datasource:
+#    url: jdbc:oracle:thin:@ip:1521/bosspdb
+    url: jdbc:oracle:thin:@xxxxxxxx:1521/bosspdb
+  jpa:
+    show-sql: true
+
+logging:
+  config: classpath:logback-dev.xml
+
+boss:
+  tomcat-port: ${boss.port.${spring.application.name}}
+  port:
+    account-service: ${boss.server.port:18081}
+    order-service: ${boss.server.port:18082}
+    resource-service: ${boss.server.port:18083}
+

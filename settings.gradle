@@ -1,0 +1,13 @@
+rootProject.name = 'seata-transaction'
+
+include 'service:order:order-api'
+include 'service:order:order-service'
+include 'service:resource:resource-api'
+include 'service:resource:resource-service'
+include 'service:account:account-api'
+include 'service:account:account-service'
+
+include 'platform:platform-boot-config'
+include 'platform:platform-tx'
+
+

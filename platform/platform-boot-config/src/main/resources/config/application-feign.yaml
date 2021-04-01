@@ -1,0 +1,18 @@
+# feign : FeignClientProperties
+feign:
+  okhttp:
+    enabled: true
+  httpclient:
+    maxConnections: 200
+    maxConnectionsPerRoute: 50
+    connectionTimeout: 60000
+    connectionTimerRepeat: 70000
+  client:
+    config:
+      jaxrs:
+        contract: feign.jaxrs.JAXRSContract  # feign使用JAX-RS定义的接口
+        connectTimeout: 60000
+        readTimeout: 60000
+        loggerLevel: basic
+  hystrix:
+    enabled: false

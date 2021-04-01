@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':service:resource:resource-api')
+    compile project(':service:order:order-api')
+    compile project(':service:account:account-api')
+    compile project(':platform:platform-boot-config')
+
+    compile project(':platform:platform-tx')
+}

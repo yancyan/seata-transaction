@@ -1,0 +1,9 @@
+dependencies {
+
+//    implementation 'io.seata:seata-metrics-exporter-prometheus:1.4.1'
+    // https://mvnrepository.com/artifact/io.seata/seata-metrics-all
+    compile 'com.alibaba.cloud:spring-cloud-starter-alibaba-seata'
+    // https://mvnrepository.com/artifact/io.seata/seata-serializer-kryo
+    implementation group: 'io.seata', name: 'seata-serializer-kryo', version: '1.3.0'
+
+}

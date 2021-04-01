@@ -1,0 +1,12 @@
+dependencies {
+
+
+    compile "com.oracle.database.jdbc:ojdbc10:${ojdbc10Version}"
+    implementation group: 'com.alibaba', name: 'druid-spring-boot-starter', version: '1.2.5'
+//        compile 'org.flywaydb:flyway-core:6.1.0'
+    implementation "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery"
+//        implementation "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config"
+    implementation 'org.springframework.boot:spring-boot-starter-jersey'
+
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-seata'
+}

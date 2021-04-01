@@ -1,0 +1,44 @@
+# ACTUATOR
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,loggers,configprops,shutdown
+    info:
+      enabled: true
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
+    restart:
+      enabled: true
+    shutdown:
+      enabled: true
+    info:
+      enabled: true
+  health:
+    enabled: true
+    rabbit:
+      enabled: false
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
+#spring:
+#  sleuth:
+#    enabled: true
+#    sampler:
+#      probability: 1.0 # 将采样比例设置为 1.0，也就是全部都需要。默认是 0.1QueryMaxNumberConfigInfoQueryMaxNumberConfigInfo
+#  zipkin:
+#    enabled: true
+#    base-url: zipkinhost  # 指定了 Zipkin 服务器的地址
+#    sender:
+#      type: web
+#  security:
+#    user:
+#      name: actuator
+#      password: admin
+#      roles: ENDPOINT_ADMIN

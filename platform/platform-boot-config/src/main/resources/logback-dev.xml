@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="localhost"/>
+    <springProperty scope="context" name="bossHost" source="boss.host" defaultValue="localhost"/>
+
+    <property name="suffix" value="dev"/>
+    <property name="logName" value="${appName}-${suffix}"/>
+    <!-- 日志级别 -->
+    <property name="logLevel" value="INFO"></property>
+    <!-- 日志地址 -->
+    <property name="logPath" value="logs/${appName}"></property>
+    <!-- 最大保存时间 -->
+    <property name="maxHistory" value="7"/>
+
+    <!-- 控制台打印日志的相关配置 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日志格式 -->
+        <encoder>
+            <pattern>
+                <![CDATA[%d{HH:mm:ss.SSS} [%thread][company:%X{company}][TraceInfo:%X{traceId}:%X{spanId}] %-5level %logger{36} - %msg%n]]>
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件保存日志的相关配置，同步 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 保存日志文件的路径 -->
+        <file>${logPath}/${logName}.log</file>
+        <!-- 日志格式 -->
+        <encoder>
+            <pattern>
+                <![CDATA[%d{yyyy-MM-dd HH:mm:ss.SSS}%X{ip}[%thread][company:%X{company}][TraceInfo:%X{traceId}:%X{spanId}]  %-5level %logger{35} -%msg%n]]>
+            </pattern>
+        </encoder>
+        <!-- 循环政策：基于时间创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${logPath}/${logName}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 最大保存时间-->
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+
+<!--    <appender name="FLUENT_SYNC" class="ch.qos.logback.more.appenders.FluencyLogbackAppender">-->
+<!--        <tag>boss.${logName:-UNKOWN}</tag>-->
+<!--        <remoteHost>${bossHost}</remoteHost>-->
+<!--        <port>${LOG_FLUENTD_PORT:-24224}</port>-->
+<!--        <fileBackupDir>/tmp</fileBackupDir>-->
+<!--        <bufferChunkInitialSize>2097152</bufferChunkInitialSize>-->
+<!--        <bufferChunkRetentionSize>16777216</bufferChunkRetentionSize>-->
+<!--        <maxBufferSize>268435456</maxBufferSize>-->
+<!--        <waitUntilBufferFlushed>30</waitUntilBufferFlushed>-->
+<!--        <waitUntilFlusherTerminated>40</waitUntilFlusherTerminated>-->
+<!--        <flushIntervalMillis>500</flushIntervalMillis>-->
+<!--        <senderMaxRetryCount>12</senderMaxRetryCount>-->
+<!--        <useEventTime>true</useEventTime>-->
+<!--        <additionalField>-->
+<!--            <key>@log_name</key>-->
+<!--            <value>${logName:-UNKOWN}</value>-->
+<!--        </additionalField>-->
+<!--        <additionalField>-->
+<!--            <key>pod_name</key>-->
+<!--            <value>${POD_NAME:-UNKOWN}</value>-->
+<!--        </additionalField>-->
+<!--    </appender>-->
+
+<!--    <appender name="FLUENT" class="ch.qos.logback.classic.AsyncAppender">-->
+<!--        <queueSize>${queueSize}</queueSize>-->
+<!--        <appender-ref ref="FLUENT_SYNC" />-->
+<!--    </appender>-->
+
+    <logger name="com.star" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+<!--        <appender-ref ref="FLUENT"/>-->
+    </logger>
+
+    <root level="${logLevel}">
+        <!-- appender referenced after it is defined -->
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+<!--        <appender-ref ref="FLUENT"/>-->
+    </root>
+</configuration>

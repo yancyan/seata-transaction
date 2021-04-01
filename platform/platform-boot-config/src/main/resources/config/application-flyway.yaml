@@ -1,0 +1,9 @@
+spring:
+  flyway:
+    enabled: true
+    encoding: UTF-8
+    locations: classpath:db/migration
+    baselineOnMigrate: true
+    outOfOrder: true
+    # schema table name is flyway_schema_history from 5.0
+    table: schema_history

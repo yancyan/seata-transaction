@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order-service
+  profiles:
+    include: tomcat, jpa, jersey, flyway, feign, datasource, seata, actuator, common
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: messages/message
+    useCodeAsDefaultMessage: true
+    encoding: UTF-8
+  flyway:
+    placeholders: { table_space: TBLBOSSACCOUNT, db_script_i18n: en }
+  datasource:
+    username: boss_order
+    password: boss_order

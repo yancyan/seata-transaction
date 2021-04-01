@@ -1,0 +1,117 @@
+buildscript {
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+        }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.3.2.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+    }
+}
+apply plugin: 'base'
+apply from: "$rootDir/ext.gradle"
+
+
+allprojects {
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+        }
+    }
+}
+
+
+configure(allprojects.findAll { it.subprojects.empty }) {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.example'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
+        }
+        dependencies {
+        }
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+        implementation 'org.springframework.boot:spring-boot-starter-jersey'
+        compile 'javax.validation:validation-api:2.0.1.Final'
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.flywaydb:flyway-core'
+        compile 'io.github.openfeign:feign-jaxrs2:10.4.0'
+        implementation 'io.github.openfeign:feign-okhttp'
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+//        implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+//        implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
+
+        runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    }
+
+    javadoc {
+        options.charSet = 'utf8'
+        options.encoding = 'utf8'
+        options.docEncoding = 'utf8'
+        options.memberLevel = JavadocMemberLevel.PRIVATE
+    }
+
+    bootJar {
+        manifest {
+            attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+        }
+        excludes = ["netty-all-4.1.38.Final.jar"]
+    }
+}
+
+configure(subprojects.findAll {
+    it.subprojects.empty && (it.name.endsWith('-api') || (it.name.startsWith('platform-')))
+}) {
+    jar { enabled = true }
+    bootJar { enabled = false }
+}
+
+configure(subprojects.findAll {
+    (it.subprojects.empty && it.name.endsWith('-service') && !it.name.startsWith('api-')) ||  it.name.endsWith('boot-config')
+}) {
+
+    dependencies {
+        compile "com.oracle.database.jdbc:ojdbc10:${ojdbc10Version}"
+        compile "com.oracle.database.nls:orai18n:${ojdbc10Version}"
+        compile "com.google.guava:guava:${guavaVersion}"
+        implementation 'org.flywaydb:flyway-core'
+
+        implementation group: 'com.alibaba', name: 'druid-spring-boot-starter', version: '1.2.5'
+        implementation "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery"
+
+    }
+}
+
+

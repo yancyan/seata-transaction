@@ -1,0 +1,36 @@
+spring:
+  transaction:
+    default-timeout: 60000s
+  jpa:
+    # 交给druid来负责sql的打印;
+    showSql: false
+    database: oracle
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    openInView: false
+    properties:
+      hibernate:
+        # Initialize Lazy Proxies or Collections outside a given Transactional Persistence Context.
+        enable_lazy_load_no_trans: true
+        criteria:
+          literal_handling_mode: BIND
+        format_sql: true
+        cache:
+          # 关闭二级缓存;
+          use_second_level_cache: false
+          # 关闭查询缓存;
+          use_query_cache: false
+        generate_statistics: true
+        session:
+          events:
+            log: false
+        query:
+          in_clause_parameter_padding: true
+          # org.hibernate.cfg.AvailableSettings.QUERY_PLAN_CACHE_MAX_SIZE
+          plan_cache_max_size: 64
+          # org.hibernate.cfg.AvailableSettings.QUERY_PLAN_CACHE_PARAMETER_METADATA_MAX_SIZE
+          plan_parameter_metadata_max_size: 64
+      javax:
+        persistence:
+          sharedCache:
+            # 除非我们用cacheable明确保证需要缓存, 其他情况下针对所有的po对象都不缓存;
+            mode: ENABLE_SELECTIVE
