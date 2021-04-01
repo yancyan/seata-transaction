@@ -29,6 +29,8 @@ configure(allprojects.findAll { it.subprojects.empty }) {
 
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'maven-publish'
+//    apply plugin: 'distribution'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
@@ -39,6 +41,29 @@ configure(allprojects.findAll { it.subprojects.empty }) {
     configurations {
         compileOnly {
             extendsFrom annotationProcessor
+        }
+    }
+
+    jar {
+        enabled = true
+        manifest.attributes provider: 'gradle'
+        manifest.attributes groupName: 'star.test'
+        manifest.attributes projectName: project.name
+        manifest.attributes version: "V10.0.1"
+        preserveFileTimestamps false
+        reproducibleFileOrder true
+    }
+
+    publishing {
+        publications {
+            customizedArtifact(MavenPublication) {
+                artifact jar
+            }
+        }
+        repositories {
+            maven {
+                url = "$rootDir/repos/releases"
+            }
         }
     }
 
